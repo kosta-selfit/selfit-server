@@ -15,13 +15,20 @@ public class CorsConfig {
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true); //json 데이터 자바스크립트에서 해라
-		config.addAllowedOriginPattern("*");
-		config.addAllowedHeader("*"); //
-		config.addAllowedMethod("*");
-		config.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "selfitKosta"));
-		source.registerCorsConfiguration("/**", config);
 
+		config.setAllowCredentials(true);
+
+		// ❗ addAllowedOriginPattern("*") → 아래로 교체
+		// '*' 와 credentials(true)는 함께 쓸 수 없음
+		config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:8880")); // 프론트 주소 명시
+
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+
+		// 클라이언트가 접근 가능한 응답 헤더 지정
+		config.setExposedHeaders(Arrays.asList("Authorization", "selfitKosta"));
+
+		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
 

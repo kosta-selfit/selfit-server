@@ -53,6 +53,7 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable());
 		http
 			.authorizeHttpRequests(auth -> auth
+				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.requestMatchers("/api/board/list").permitAll()
 				.requestMatchers("/api/board/detail/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/account/member").permitAll()
@@ -60,6 +61,8 @@ public class SecurityConfig {
 				.requestMatchers("/api/board/**").hasRole("USER")
 				.requestMatchers("/api/dashboard/**").hasRole("USER")
 				.requestMatchers("/api/account/member/**").hasRole("USER")
+				.requestMatchers("/api/food/openSearch/**").hasRole("USER")
+				.requestMatchers("/api/exercise/openSearch/**").hasRole("USER")
 				.anyRequest().permitAll()
 			);
 
